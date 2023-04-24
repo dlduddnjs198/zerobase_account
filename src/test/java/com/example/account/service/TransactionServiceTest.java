@@ -119,7 +119,6 @@ class TransactionServiceTest {
                 .willReturn(Optional.of(user));
         given(accountRepository.findByAccountNumber(anyString()))
                 .willReturn(Optional.empty());
-        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 
         //when
         AccountException exception = assertThrows(AccountException.class,
@@ -148,7 +147,6 @@ class TransactionServiceTest {
                         .accountUser(harry)
                         .balance(0L)
                         .accountNumber("1000000012").build()));
-        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         //when
         AccountException exception = assertThrows(AccountException.class,
                 () -> transactionService.useBalance(1L, "1111111111", 1000L));
@@ -173,7 +171,6 @@ class TransactionServiceTest {
                         .accountStatus(AccountStatus.UNREGISTERED)
                         .balance(0L)
                         .accountNumber("1000000012").build()));
-        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         //when
         AccountException exception = assertThrows(AccountException.class,
                 () -> transactionService.useBalance(1L, "1111111111", 1000L));
@@ -264,7 +261,7 @@ class TransactionServiceTest {
                 .accountStatus(IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000012").build();
-        Transaction transaction=Transaction.builder()
+        Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
                 .transactionResultType(S)
@@ -300,7 +297,7 @@ class TransactionServiceTest {
         //then(어떤 결과가 나와야한다)
         verify(transactionRepository, times(1)).save(captor.capture());
         assertEquals(CANCEL_AMOUNT, captor.getValue().getAmount());
-        assertEquals(10000L+CANCEL_AMOUNT, captor.getValue().getBalanceSnapshot());
+        assertEquals(10000L + CANCEL_AMOUNT, captor.getValue().getBalanceSnapshot());
         assertEquals(S, transactionDto.getTransactionResultType());
         assertEquals(CANCEL, transactionDto.getTransactionType());
         assertEquals(10000L, transactionDto.getBalanceSnapshot());
@@ -351,18 +348,18 @@ class TransactionServiceTest {
                 .name("Pobi").build();
         user.setId(12L);
         Account account = Account.builder()
-                .id(1L)
                 .accountUser(user)
                 .accountStatus(IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000012").build();
+        account.setId(1L);
         Account accountNotUse = Account.builder()
-                .id(2L)
                 .accountUser(user)
                 .accountStatus(IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000013").build();
-        Transaction transaction=Transaction.builder()
+        accountNotUse.setId(2L);
+        Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
                 .transactionResultType(S)
@@ -398,18 +395,18 @@ class TransactionServiceTest {
                 .name("Pobi").build();
         user.setId(12L);
         Account account = Account.builder()
-                .id(1L)
                 .accountUser(user)
                 .accountStatus(IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000012").build();
-        Transaction transaction=Transaction.builder()
+        account.setId(1L);
+        Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
                 .transactionResultType(S)
                 .transactionId("transactionId")
                 .transactedAt(LocalDateTime.now())
-                .amount(CANCEL_AMOUNT+1000L)
+                .amount(CANCEL_AMOUNT + 1000L)
                 .balanceSnapshot(9000L)
                 .build();
         //Optional을 toString()으로 바꿀 수 없다는게 도대체 무슨 소리일까...
@@ -439,12 +436,12 @@ class TransactionServiceTest {
                 .name("Pobi").build();
         user.setId(12L);
         Account account = Account.builder()
-                .id(1L)
                 .accountUser(user)
                 .accountStatus(IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000012").build();
-        Transaction transaction=Transaction.builder()
+        account.setId(1L);
+        Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
                 .transactionResultType(S)
@@ -473,18 +470,18 @@ class TransactionServiceTest {
     }
 
     @Test
-    void successQueryTransaction(){
+    void successQueryTransaction() {
         //given(어떤 데이터가 있을때)
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
         user.setId(12L);
         Account account = Account.builder()
-                .id(1L)
                 .accountUser(user)
                 .accountStatus(IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000012").build();
-        Transaction transaction=Transaction.builder()
+        account.setId(1L);
+        Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
                 .transactionResultType(S)
